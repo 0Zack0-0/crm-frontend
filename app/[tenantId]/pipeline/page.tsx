@@ -26,6 +26,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+const PRIORITY_DOT: Record<string, string> = {
+  low:    "bg-slate-400",
+  medium: "bg-amber-400",
+  high:   "bg-rose-500",
+};
+
 export default function PipelinePage() {
   const { currentTenant } = useAuthStore();
   const { canEditDeals } = useRole();
@@ -207,9 +213,17 @@ export default function PipelinePage() {
                           onClick={() => setEditingDeal(deal)}
                           className="bg-card border border-border/50 rounded-2xl p-3 shadow-sm cursor-pointer hover:border-foreground/20 hover:shadow-md transition-all group"
                         >
-                          <h4 className="text-sm font-semibold truncate mb-2">
-                            {deal.name}
-                          </h4>
+                          <div className="flex items-center gap-2 mb-2">
+                            {deal.priority && (
+                              <span
+                                title={{ low: "Baja", medium: "Media", high: "Alta" }[deal.priority]}
+                                className={`shrink-0 w-2.5 h-2.5 rounded-full ${PRIORITY_DOT[deal.priority] ?? "bg-slate-400"}`}
+                              />
+                            )}
+                            <h4 className="text-sm font-semibold truncate">
+                              {deal.name}
+                            </h4>
+                          </div>
 
                           <div className="flex items-center gap-1.5 mb-2">
                             <DollarSign size={12} className="text-muted-foreground shrink-0" />

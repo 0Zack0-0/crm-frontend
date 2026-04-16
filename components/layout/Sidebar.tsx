@@ -198,6 +198,12 @@ export default function Sidebar() {
           </div>
         )}
 
+        {isMobile && (
+          <div className="flex justify-end mb-2">
+            <ThemeToggle />
+          </div>
+        )}
+
         {(!collapsed || isMobile) && (
           <div className="mt-3 flex items-center gap-3 px-3 py-3 rounded-2xl bg-muted/50">
             <div className="w-9 h-9 rounded-full bg-foreground/10 flex items-center justify-center text-xs font-bold">

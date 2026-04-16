@@ -32,10 +32,10 @@ const STATUS_MAP: Record<string, { label: string; color: string }> = {
   lost: { label: "Perdido", color: "bg-red-100 text-red-700" },
 };
 
-const PRIORITY_MAP: Record<NonNullable<Deal["priority"]>, { label: string; color: string }> = {
-  low: { label: "Baja", color: "bg-slate-100 text-slate-700" },
-  medium: { label: "Media", color: "bg-amber-100 text-amber-800" },
-  high: { label: "Alta", color: "bg-rose-100 text-rose-700" },
+const PRIORITY_MAP: Record<NonNullable<Deal["priority"]>, { label: string; color: string; dot: string }> = {
+  low:    { label: "Baja",  color: "bg-slate-100 text-slate-700", dot: "bg-slate-400" },
+  medium: { label: "Media", color: "bg-amber-100 text-amber-800", dot: "bg-amber-400" },
+  high:   { label: "Alta",  color: "bg-rose-100 text-rose-700",   dot: "bg-rose-500"  },
 };
 
 export default function DealsPage() {
@@ -192,13 +192,22 @@ export default function DealsPage() {
 
               {filtered.map((deal) => {
                 const st = STATUS_MAP[deal.status] || STATUS_MAP.open;
+                const pr = deal.priority ? PRIORITY_MAP[deal.priority] : null;
                 return (
                   <div
                     key={deal.id}
                     onClick={() => setSelectedDeal(deal)}
                     className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-border/20 hover:bg-muted/20 transition-colors group items-center cursor-pointer"
                   >
-                    <div className="col-span-3 text-sm font-semibold truncate">{deal.name}</div>
+                    <div className="col-span-3 flex items-center gap-2 min-w-0">
+                      {pr && (
+                        <span
+                          title={pr.label}
+                          className={`shrink-0 w-2.5 h-2.5 rounded-full ${pr.dot}`}
+                        />
+                      )}
+                      <span className="text-sm font-semibold truncate">{deal.name}</span>
+                    </div>
                     <div className="col-span-2 text-xs text-muted-foreground truncate">{getName(companies, deal.company_id)}</div>
                     <div className="col-span-2 text-xs text-muted-foreground truncate">{getContactName(deal.contact_id)}</div>
                     <div className="col-span-1 text-xs text-muted-foreground truncate">{getName(stages, deal.stage_id)}</div>
@@ -219,6 +228,7 @@ export default function DealsPage() {
             <div className="md:hidden space-y-3">
               {filtered.map((deal) => {
                 const st = STATUS_MAP[deal.status] || STATUS_MAP.open;
+                const pr = deal.priority ? PRIORITY_MAP[deal.priority] : null;
                 return (
                   <div
                     key={deal.id}
@@ -226,7 +236,15 @@ export default function DealsPage() {
                     className="bg-card border border-border/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold truncate flex-1">{deal.name}</span>
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        {pr && (
+                          <span
+                            title={pr.label}
+                            className={`shrink-0 w-2.5 h-2.5 rounded-full ${pr.dot}`}
+                          />
+                        )}
+                        <span className="text-sm font-semibold truncate">{deal.name}</span>
+                      </div>
                       <span className={`ml-2 px-2 py-0.5 rounded-full text-[10px] font-bold ${st.color}`}>{st.label}</span>
                     </div>
                     <p className="text-lg font-bold mb-2">€{(deal.value || 0).toLocaleString("es-ES")}</p>

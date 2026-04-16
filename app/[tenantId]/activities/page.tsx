@@ -332,6 +332,20 @@ export default function ActivitiesPage() {
                           {formatDate(activity.due_date)}
                         </span>
                       )}
+                      {activity.tags && activity.tags.length > 0 &&
+                        activity.tags.map((tag) => (
+                          <span
+                            key={tag.id}
+                            className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                            style={{
+                              backgroundColor: (tag.color ?? "#6366f1") + "25",
+                              color: tag.color ?? "#6366f1",
+                            }}
+                          >
+                            <Tag size={8} />
+                            {tag.name}
+                          </span>
+                        ))}
                     </div>
                   </div>
 

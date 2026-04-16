@@ -427,6 +427,7 @@ export interface Activity {
   created_at: string;
   updated_at?: string;
   created_by?: string | { id: string; full_name: string; email: string };
+  tags?: ActivityTag[];
 }
 
 export interface ActivityComment {
